@@ -1,0 +1,67 @@
+\documentclass[12pt,a4paper,violet]{bbe}
+\usepackage{blindtext}
+\begin{document}
+	\chapter{Bayesian Network}
+    \begin{theorem}
+    Let $\{X_i\}_{i = 1}^{n}$ are random variables, then
+    
+    $$
+        P(\cap_{i=1}^{n} X_i) = \prod_{j =1}^{n} P(X_j | \cap_{i=1}^{j-1} X_i)
+    $$
+    \end{theorem}
+    
+    consider the following probability directed acyclic graph:
+    
+    \begin{equation*}
+    \begin{aligned} 
+        P(X_1,X_2,X_3,X_4) & = & P(X_1 | X_2,X_3,X_4) \times P(X_2 | X_3,X_4) \times P(X_3 | X_4) \times P(X_4) \\
+        & = & P(X_1 | X_3,X_4) \times P(X_2 | X_3) \times P(X_3) \times P(X_4)
+    \end{aligned}
+    \end{equation*}
+    
+    \begin{theorem}
+        Let $G = <V,E>$ be a probability directed acyclic graph. where $V = \{X\}_{i=1}^{n}$.
+        \begin{equation*}
+            \begin{aligned}
+            P(\cap_{i=1}^{n} X_i) = \prod_{i = 1}^{n} P(X_i | parent(X_i))
+            \end{aligned}
+        \end{equation*}
+    \end{theorem}
+    
+    \begin{proof}
+    
+        let's try a constructive proof,at first,we have known that $P(\cap_{ i \in [1,n] \cap \mathbb{N}} X_i) = P(\cap_{ i \in permuate([1,n])} X_i)$ 
+        \begin{equation*}
+        \begin{aligned}
+             P(\cap_{i=1}^{n} X_i) & = & P(X_1 | X_2,X_3,...,X_n) \times P(X_2 ,X_3,...,X_n)
+        \end{aligned}
+        \end{equation*}
+        
+        therefore $Parent(X_1) \subseteq \{X_i\}_{i=2}^{n}$ hold.
+        
+        then consider $P(X_2 ,X_3,...,X_n) = P(X_2 | X_3,...,X_n) \times P(X_3,...,X_n)$,Since $G$ is a directed acyclic graph, there are only three cases to decompose it into the one we want:
+        
+        $\textbf{Case1}$ $X_1 \notin Parent(X_2)$ and $X_2 \notin Parent(X_1)$
+        
+        In this case,it's trival
+        
+        $\textbf{Case2}$ $X_1 \notin Parent(X_2)$ and $X_2 \in Parent(X_1)$
+        
+        All right,we can continue to decomposition $P(X_2,...,X_n) $ to $P(X_2 | X_3,...,X_n)$ , because $G$ is a DAG (directed acyclic graph.
+        
+        $\textbf{Case3}$ $X_1 \in Parent(X_2)$ and $X_2 \notin Parent(X_1)$
+        
+        Back to previous step and replace $P(X_2,X_1,X_3,...,X_n)$ with $P(X_1,X_2,X_3,...,X_n)$
+        
+        Continue with the above process until the end of the decomposition and we have got 
+        
+        \begin{equation*}
+            \begin{aligned}
+                P(\cap_{i=1}^{n} X_i) = \prod_{i = 1}^{n} P(X_i | parent(X_i))
+            \end{aligned}
+        \end{equation*}
+        
+    \end{proof}
+    
+        
+\end{document}

@@ -37,18 +37,22 @@ class Edge(object):
         return self.e
 
 class ProbTable(object):
-    def __init__(self,nodes,result):
+    def __init__(self,nodes,result,probability_rows):
         self.nodes = nodes
         self.result = result
-    def add_probability(self,probability_rows : dict):
         self.probability_rows = probability_rows
-    def get_names(self):
-        return [n.name for n in self.nodes]
-    def query_probability(self,row):
-        for k,v in self.probability_rows.items():
-            if set(k) == set(row):
-                return v
-        return 1.0
+    def _query_probability(self,parameters,result):
+        key = [None] * len(self.nodes)
+        for k,v in parameters.items():
+            try:
+                idx = self.nodes.index(k)
+                key[idx] = v
+            except:
+                continue
+        key = tuple(key) + (result,)
+        #print(self.probability_rows)
+        return self.probability_rows[key]
+
     def print_table(self):
         console = Console()
         table = Table(show_header=True, header_style="bold magenta")
@@ -84,7 +88,10 @@ class BayesianNetwork(object):
                 table.add_row(f"{node.name}",
                               f"{','.join(map(lambda x : x.name, parents))}")
         console.print(table)
-    
+    def print_network(self):
+        for i,t in enumerate(self.tables.values()):
+            print(f"[bold magenta]Table {i + 1}[/bold magenta]","😎")
+            t.print_table()
     
     def get_parents(self,node : Node):
         return [edge.start() for edge in self.edges if edge.end() == node]
@@ -92,14 +99,20 @@ class BayesianNetwork(object):
     def add_tables(self,tables):
         for t in tables:
             self.add_table(t)
-
-    def _find_value(self,variables,values,n):
-        for node,v in zip(variables,values):
-            if node.name == n:
-                return v
+        
     def interface(self,parameters : dict):
-        pass
-
+        var = list(zip(parameters.items()))
+        nodes = list(map(lambda x : x[0][0],var))
+        values= list(map(lambda x : x[0][1],var))
+        prob = 1.0
+        for i,n in enumerate(nodes):
+            parents = self.get_parents(n)
+            if len(parents) == 0:
+                prob *= n.query_probability(values[i])
+            else:
+                prob *= self.tables[n.name]._query_probability(parameters,values[i])
+        return prob
+            
 
 if __name__ == "__main__":
     ## example
@@ -111,16 +124,13 @@ if __name__ == "__main__":
                               [Edge(server1,server2),
                                Edge(server1,user),
                                Edge(server2,user)])
-    table1 = ProbTable([server1],server2)
-    table1.add_probability(
-                        {
+    table1 = ProbTable([server1],server2,{
                             ("F","T") : 0.3,
                             ("F","F") : 0.7,
                             ("T","T") : 0.7,
-                            ("T","F") : 0.3
-                         })
-    table2 = ProbTable([server2,server1],user)
-    table2.add_probability({
+                            ("T","F") : 0.3}
+                         )
+    table2 = ProbTable([server2,server1],user,{
                 ("F","F","T") : 0,
                 ("F","F","F") : 1,
                 ("F","T","T") : 1,
@@ -130,8 +140,8 @@ if __name__ == "__main__":
                 ("T","T","T") : 1,
                 ("T","T","F") : 0,
             })
-    table1.print_table()
-    table2.print_table()
+
     network.add_tables([table1,table2])
-    print(network.tables)
-    print(network.interfaces({server1 : "T",server2 : "F",user : "T"}))
+    network.print_network()
+    print({server1 : "T",server2 : "F",user : "T"},network.interface({server1 : "T",server2 : "F",user : "T"}))
+    print({server1 : "T",server2 : "T",user : "T"},network.interface({server1 : "T",server2 : "T",user : "T"}))
