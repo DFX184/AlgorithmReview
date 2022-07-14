@@ -813,9 +813,9 @@
 	\def\@oddfoot{%
 		\textcolor{bbe!89!white}{\footnotesize\itshape\preparelabel~\preparename}%និពន្ធ និងរៀបរៀង អូល សាយ
 		\hfil\tikz[baseline=-0.8ex]{\node[sharp corners,inner sep=3pt,fill=bbe,text=white,font=\normalsize\bfseries\sffamily,text width=4ex,align=center]{\thepage};}%
-		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape Institute of Technology of Cambodia}}%
+		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape Muse}}%
 	\def\@evenfoot{%
-		\textcolor{bbe!89!white}{\footnotesize\itshape Institute of Technology of Cambodia}%
+		\textcolor{bbe!89!white}{\footnotesize\itshape Muse}%
 		\hfil\tikz[baseline=-0.8ex]{\node[sharp corners,inner sep=3pt,fill=bbe,text=white,font=\normalsize\bfseries\sffamily,text width=4ex,align=center]{\thepage};}%
 		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape\preparelabel~\preparename}%
 		}%
@@ -831,9 +831,9 @@
 	\def\@oddfoot{%
 		\textcolor{bbe!89!white}{\footnotesize\itshape\preparelabel~\preparename}%
 		\hfil\tikz[baseline=-0.8ex]{\node[sharp corners,inner sep=3pt,fill=bbe,text=white,font=\normalsize\bfseries\sffamily,text width=4ex,align=center]{\thepage};}%
-		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape Institute of Technology of Cambodia}}%
+		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape Muse}}%
 	\def\@evenfoot{%
-		\textcolor{bbe!89!white}{\footnotesize\itshape Institute of Technology of Cambodia}%
+		\textcolor{bbe!89!white}{\footnotesize\itshape Muse}%
 		\hfil\tikz[baseline=-0.8ex]{\node[sharp corners,inner sep=3pt,fill=bbe,text=white,font=\normalsize\bfseries\sffamily,text width=4ex,align=center]{\thepage};}%
 		\hfil\textcolor{bbe!89!white}{\footnotesize\itshape\preparelabel~\preparename}%
 	}%
